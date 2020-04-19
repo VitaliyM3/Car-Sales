@@ -1,5 +1,3 @@
-import React from "react";
-
 export const initialState = {
     additionalPrice: 0,
     car: {
@@ -17,12 +15,27 @@ export const initialState = {
     ]
 };
 
-
 export const reducer = (state = initialState, action) => {
     switch (action.type) {
         case 'BUY_ITEM':
             return {
-                ...state
+                ...state,
+                car: {
+                  ...state.car,
+                  price: state.car.price + action.payload.price,
+                  features: [...state.car.features, action.payload]
+                }
+            };
+        case 'REMOVE_FEATURE':
+            return {
+              ...state,
+              car: {
+                ...state.car,
+                price: state.car.price - action.payload.price,
+                features: state.car.features.filter(
+                  item => item.id !== action.payload.id
+                )
+              }
             };
         default:
             return state;
